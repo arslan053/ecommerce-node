@@ -33,7 +33,6 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 mongoConnect( () => {
-    console.log('db connected Successfuly')
-
+  console.log('db connected Successfuly')
   app.listen(3000);
 });
