@@ -38,6 +38,7 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
+  console.log('helllllllllo')
   Product.fetchAll()
     .then(products => {
       res.render('shop/index', {
