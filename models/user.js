@@ -63,7 +63,6 @@ class User {
   deleteItemFromCart(prodId){
     const updatedCartItems = this.cart.items.filter(item => (prodId !== item.productId.toString()));
     const updatedCart = {items: updatedCartItems}
-    console.log(';;;;;', prodId)
     const db = getDb();
     return db
       .collection('users')
@@ -71,6 +70,44 @@ class User {
       {_id: new ObjectId(this._id)},
       {$set: {cart: updatedCart}}
     ) 
+  }
+
+  // Method to create order from cart
+  addOrder(){
+    const db = getDb();
+    return this.getCart()
+      .then(products => {
+
+        const order = {
+          products:products,
+          user: {
+            _id: new ObjectId(this._id),
+            name: this.name
+          }
+        }
+
+        return db.collection('orders')
+          .insertOne(order)
+          .then(result => {
+            this.cart.items = [];
+            db
+            .collection('users')
+            .updateOne(
+              {_id: new ObjectId(this._id)},
+              {$set: {cart: {items: []}}}
+            ) 
+          })
+        
+      })
+  }
+
+  // Getting Order Data
+  getOrders(){
+    const db = getDb();
+    return db
+      .collection('orders')
+      .find({'user._id': new ObjectId(this._id)})
+      .toArray()
   }
 
   static findById(id){
