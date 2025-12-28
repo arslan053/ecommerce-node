@@ -2,19 +2,20 @@ const getDb = require('../util/database').getDb
 const mongodb = require('mongodb');
 
 class Product{
-  constructor(title, price, description, imageUrl, id){
+  constructor(title, price, description, imageUrl, id, userId){
     this.title = title;
     this.price = price;
     this.imageUrl = imageUrl;
     this.description = description;
     this._id = id ? new mongodb.ObjectId(id) : null;
+    this.userId = userId;
   }
 
   save() {
     const db = getDb();
     let dbOP;
     if (this._id) {
-      dbOP = db.collection('products').updateOne({_id: this._id}, { $set: this })
+        dbOP = db.collection('products').updateOne({_id: this._id}, { $set: this })
     } else {
       dbOP = db.collection('products').insertOne(this)
     }
@@ -67,3 +68,4 @@ class Product{
 }
 
 module.exports = Product;
+ 
