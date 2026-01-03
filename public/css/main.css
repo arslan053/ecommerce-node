@@ -247,6 +247,10 @@ form {
   background-color: rgb(253, 171, 171)
 }
 
+.form-control input.invalid {
+  border-color: red;
+}
+
 @media (min-width: 768px) {
   .main-header__nav {
     display: flex;
